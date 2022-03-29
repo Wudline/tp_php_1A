@@ -7,6 +7,10 @@
     </head>
 
     <h1>GG tu es co</h1>
-    <a href="Controllers/Deconnexion.php">Déconnexion</a>  
+    <a href="Controllers/Deconnexion.php">Déconnexion</a>
+
+    <?php
+        foreach ($_SESSION as $key=>$value) { echo $key." => ".$value."<br>"; }
+    ?>
     
 </html>

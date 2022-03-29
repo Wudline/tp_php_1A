@@ -3,7 +3,7 @@
 
     include("../Models/Croissant.php");
     $ModCroissant = new Models\Croissant();
-    
+
     include("../Models/Demande.php");
     $ModDemande = new Models\Demande();
 
@@ -35,9 +35,9 @@
 
                     if( !empty($matchDate) )
                     {
-                        $deadline = $dateCroissantage->modify( '+1 week' ); 
+                        $deadline = $dateCroissantage->modify( '+1 week' );
 
-                        $ModCroissant->AjoutCroissantage($idCroissanteur, $idCroissanté, $dateCroissantage, $deadline);
+                        $this->ModCroissant->AjoutCroissantage($idCroissanteur, $idCroissanté, $dateCroissantage, $deadline);
                     }
                     else 
                     {
@@ -82,7 +82,7 @@
 
                     if( !empty($matchViennoiserie) )
                     {
-                        $ModDemande->AjoutDemande($croissantage, $etudiant, $viennoise);
+                        $this->ModDemande->AjoutDemande($croissantage, $etudiant, $viennoise);
                     }
                 }
             }
@@ -91,7 +91,7 @@
 
         function AfficheCroissant()
         {
-            $liste = $ModCroissant->ListeCroissantage();
+            $liste = $this->ModCroissant->ListeCroissantage();
 
             echo "<table>";
             foreach($liste as $ModCroissantage)
@@ -109,7 +109,7 @@
 
         function SelectViennoiseries($nomPost)
         {
-            $liste = $ModCroissant->zListerViennoiseries();
+            $liste = $this->ModCroissant->zListerViennoiseries();
 
             echo "<select name='$nomPost'>";
 

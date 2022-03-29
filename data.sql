@@ -7,7 +7,8 @@ create table etudiant(
     -- check(nom, '[A-Za-z]+ [A-Za-z -]+'),
     mdp varchar(50) not null, 
     classe int, 
-    promo int   
+    promo int,
+    role int
 );
 
 create table classe(
@@ -19,6 +20,11 @@ create table promo(
     id serial primary key,
     annee varchar(4) not null unique 
     -- check(annee, '(19||20)[0-9]{2}')
+);
+
+create table role(
+    id serial primary key,
+    nom varchar(50) not null unique
 );
 
 create table viennoiserie(
@@ -52,6 +58,10 @@ create table demande(
 
 -- insertion de valeurs
 
+insert into classe (nom) values
+("admin"),
+("etudiant");
+
 insert into classe (nom) values 
 ("IMR"),
 ("IPS");
@@ -66,39 +76,39 @@ insert into viennoiserie (nom) values
 ("Croissant"),
 ("Pain au chocolat");
 
-insert into etudiant (login, nom, mdp, classe, promo) values
-("e.tudiant0", "Etu Diant", "mdp", 1, 1),
-("e.tudiant1", "Etu Diant", "mdp", 1, 1),
-("e.tudiant2", "Etu Diant", "mdp", 1, 1),
-("e.tudiant3", "Etu Diant", "mdp", 1, 1),
-("e.tudiant4", "Etu Diant", "mdp", 1, 1),
-("e.tudiant5", "Etu Diant", "mdp", 2, 1),
-("e.tudiant6", "Etu Diant", "mdp", 2, 1),
-("e.tudiant7", "Etu Diant", "mdp", 2, 1),
-("e.tudiant8", "Etu Diant", "mdp", 2, 1),
-("e.tudiant9", "Etu Diant", "mdp", 2, 1),
+insert into etudiant (login, nom, mdp, classe, promo, role) values
+("e.tudiant0", "Etu Diant", "mdp", 1, 1, 2),
+("e.tudiant1", "Etu Diant", "mdp", 1, 1, 2),
+("e.tudiant2", "Etu Diant", "mdp", 1, 1, 2),
+("e.tudiant3", "Etu Diant", "mdp", 1, 1, 2),
+("e.tudiant4", "Etu Diant", "mdp", 1, 1, 2),
+("e.tudiant5", "Etu Diant", "mdp", 2, 1, 2),
+("e.tudiant6", "Etu Diant", "mdp", 2, 1, 2),
+("e.tudiant7", "Etu Diant", "mdp", 2, 1, 2),
+("e.tudiant8", "Etu Diant", "mdp", 2, 1, 2),
+("e.tudiant9", "Etu Diant", "mdp", 2, 1, 2),
 
-("etu.diant0", "Etu Di-Ant", "mdp", 1, 2),
-("etu.diant1", "Etu Di-Ant", "mdp", 1, 2),
-("etu.diant2", "Etu Di-Ant", "mdp", 1, 2),
-("etu.diant3", "Etu Di-Ant", "mdp", 1, 2),
-("etu.diant4", "Etu Di-Ant", "mdp", 1, 2),
-("etu.diant5", "Etu Di-Ant", "mdp", 2, 2),
-("etu.diant6", "Etu Di-Ant", "mdp", 2, 2),
-("etu.diant7", "Etu Di-Ant", "mdp", 2, 2),
-("etu.diant8", "Etu Di-Ant", "mdp", 2, 2),
-("etu.diant9", "Etu Di-Ant", "mdp", 2, 2),
+("etu.diant0", "Etu Di-Ant", "mdp", 1, 2, 2),
+("etu.diant1", "Etu Di-Ant", "mdp", 1, 2, 2),
+("etu.diant2", "Etu Di-Ant", "mdp", 1, 2, 2),
+("etu.diant3", "Etu Di-Ant", "mdp", 1, 2, 2),
+("etu.diant4", "Etu Di-Ant", "mdp", 1, 2, 2),
+("etu.diant5", "Etu Di-Ant", "mdp", 2, 2, 2),
+("etu.diant6", "Etu Di-Ant", "mdp", 2, 2, 2),
+("etu.diant7", "Etu Di-Ant", "mdp", 2, 2, 2),
+("etu.diant8", "Etu Di-Ant", "mdp", 2, 2, 2),
+("etu.diant9", "Etu Di-Ant", "mdp", 2, 2, 2),
 
-("etu.die0", "Etu Die", "mdp", 1, 3),
-("etu.die1", "Etu Die", "mdp", 1, 3),
-("etu.die2", "Etu Die", "mdp", 1, 3),
-("etu.die3", "Etu Die", "mdp", 1, 3),
-("etu.die4", "Etu Die", "mdp", 1, 3),
-("etu.die5", "Etu Die", "mdp", 2, 3),
-("etu.die6", "Etu Die", "mdp", 2, 3),
-("etu.die7", "Etu Die", "mdp", 2, 3),
-("etu.die8", "Etu Die", "mdp", 2, 3),
-("etu.die9", "Etu Die", "mdp", 2, 3);
+("etu.die0", "Etu Die", "mdp", 1, 3, 2),
+("etu.die1", "Etu Die", "mdp", 1, 3, 2),
+("etu.die2", "Etu Die", "mdp", 1, 3, 2),
+("etu.die3", "Etu Die", "mdp", 1, 3, 2),
+("etu.die4", "Etu Die", "mdp", 1, 3, 2),
+("etu.die5", "Etu Die", "mdp", 2, 3, 2),
+("etu.die6", "Etu Die", "mdp", 2, 3, 2),
+("etu.die7", "Etu Die", "mdp", 2, 3, 2),
+("etu.die8", "Etu Die", "mdp", 2, 3, 2),
+("etu.die9", "Etu Die", "mdp", 2, 3, 2);
 
 insert into croissantage (croissanteur, croissante, dateCroissantage, deadline) values 
 (1, 2, "2019-01-01", "2019-01-07"),

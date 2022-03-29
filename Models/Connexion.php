@@ -1,71 +1,63 @@
 <?php
 
-    namespace Models;
+namespace Models;
 
-    include("Models/Database.php");
-    
-    class Connexion
+include("Models/Database.php");
+include("Tools/Utils.php");
+
+use Tools\Utils;
+
+class Connexion
+{
+    /**
+     * testCo
+     * Vérifie si le login saisi existe en base
+     * Si le login existe, vérification du mdp
+     * Si le mdp correspond : connexion
+     *
+     * @param $login,
+     * @param $mdp
+     *
+     */
+
+    function testCo($login, $mdp)
     {
+        $database = new Database();
+        $db = $database->getConnection();
 
-        /**
-         * testCo
-         * Vérifie si le login saisi existe en base
-         * Si le login existe, vérification du mdp
-         * Si le mdp correspond : connexion
-         * 
-         * @param $login, $mdp
-         * 
-         */
+        $tool = new Utils();
 
-        function testCo($login, $mdp)
+        if( !empty($login) )
         {
-            $database = new Database(); 
-            $db = $database->getConnection();    
+            $msgNullCmpt = "$login inexistant en base<br>";
+            $msgNullExec = "echec de la requete<br>";
 
-            if( !empty($login) )
+            $requete = "select login from etudiant where login='".addslashes($login)."';";
+            $rslt = $tool->ResultRequest($db, $requete, $msgNullCmpt, $msgNullExec);
+
+            if( !empty($rslt) )
             {
-                $requete = "select login from etudiant where login='".addslashes($login)."';";
-                // echo $requete;
-
-                $stmt = $db->prepare($requete); 
-                $exec = $stmt->execute();
-                $cmpt = $stmt->rowCount();
-
-                if( $exec )
+                if( !empty($mdp) )
                 {
-                    if( $cmpt>0 )
+                    $req = "select mdp from etudiant where login='".addslashes($login)."';";
+                    $res = $tool->ResultRequest($db, $req, $msgNullCmpt, $msgNullExec);
+
+                    // echo "<br>".$mdp." == ".$res[0]['mdp']."<br>";
+
+                    if( $mdp == $res[0]['mdp'] )
                     {
-                        if( !empty($mdp) )
-                        {
-                            $req = "select mdp from etudiant where login='".addslashes($login)."';";
-                            $stm = $db->prepare($req);
-                            $exe = $stm->execute();
-                            $cpt = $stm->rowCount();
-                            $res = $stm->fetchAll();  
-        
-                            if( $mdp == $res )
-                            {
-                                session_name('CroissantageParty');
-                                session_start();
-        
-                                $_SESSION['login'] = $login;
-        
-                                header('Location: ../Co.php');
-                                exit;
-                            }
-                        }
-                    } 
-                    else 
-                    {
-                        echo "$login inexistant en base";
+                        $_SESSION['login'] = $login;
+
+                        header('Location: Co.php');
+                        exit;
                     }
-                }
-                else 
-                {
-                    echo "echec de la requete";
+                    else
+                    {
+                        echo "mot de passe incorrect<br>";
+                    }
                 }
             }
         }
-        
     }
+}
 ?>

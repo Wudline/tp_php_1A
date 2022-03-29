@@ -5,7 +5,7 @@
     include("Models/Connexion.php");
 
     if( isset($_POST['Connexion']) )
-    { 
+    {
         $co = new Models\Connexion();
         $co->testCo($_POST['login'], $_POST['mdp']); 
     }
