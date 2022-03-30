@@ -42,14 +42,16 @@ class Connexion
                     $req = "select mdp from etudiant where login='".addslashes($login)."';";
                     $res = $tool->ResultRequest($db, $req, $msgNullCmpt, $msgNullExec);
 
-                    // echo "<br>".$mdp." == ".$res[0]['mdp']."<br>";
-
                     if( $mdp == $res[0]['mdp'] )
                     {
-                        $_SESSION['login'] = $login;
+                        $rq = "select role.nom from etudiant, role where etudiant.login='".addslashes($login)."' and role.id=etudiant.role;";
+                        $rs = $tool->ResultRequest($db, $rq, $msgNullCmpt, $msgNullExec);
 
-                        header('Location: Co.php');
-                        exit;
+                        $_SESSION['login'] = $login;
+                        $_SESSION['role'] = $rs[0]["nom"];
+
+                        // header('Location: Co.php');
+                        // exit;
                     }
                     else
                     {

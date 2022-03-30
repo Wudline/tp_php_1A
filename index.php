@@ -1,23 +1,37 @@
 <?php
+    namespace View;
+
+    include("Controllers/Statistiques.php");
+    include("Controllers/Classe.php");
+    include("Controllers/Croissant.php");
+    include("Controllers/Etudiant.php");
+    include("Controllers/Promo.php");
+
+    use Controllers\CntrlStatistiques as CntrlStats;
+    use Controllers\CntrlClasse as CntrlClasse;
+    use Controllers\CntrlCroissant as CntrlCroissant;
+    use Controllers\CntrlEtudiant as CntrlEtudiant;
+    use Controllers\CntrlPromo as CntrlPromo;
 
     foreach($_POST as $k=>$v){echo $k."=>".$v."<br>";}
 
     include("Models/Connexion.php");
+    use Models\Connexion as Connexion;
 
     if( isset($_POST['Connexion']) )
     {
-        $co = new Models\Connexion();
-        $co->testCo($_POST['login'], $_POST['mdp']); 
+        $co = new Connexion();
+        $co->testCo($_POST['login'], $_POST['mdp']);
+        session_start();
     }
-
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="utf-8">
-        <title>Projet</title>
-        <link rel="stylesheet" type="text/css" href="../style.css">
+        <title>Projet - index</title>
+        <!-- <link rel="stylesheet" type="text/css" href="../style.css"> -->
     </head>
 
     <header>
@@ -26,6 +40,7 @@
 
     <body>
 
+    <?php if (!isset($_SESSION)){ ?>
         <article>
             <h2>See you!</h2>
             <p>Neko! Neko! nya~ !</p>
@@ -40,6 +55,17 @@
                 <input type="submit" name="Connexion" value="Connexion">
             </form>
         </article>
+    <?php
+    }
+    elseif ( $_SESSION["role"]=="admin" )
+    {
+        // include ("Admin.php");
+    }
+    elseif ( $_SESSION["role"]=="etudiant" )
+    {
+        echo "We're all mad here...<br>";
+    }
+    ?>
 
       </body>
 

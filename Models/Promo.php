@@ -1,28 +1,23 @@
 <?php
     namespace Models;
 
-    class Promo {
+    use Tools\Utils;
+
+class Promo {
     
         
         /**
          * ListePromo
          * retourne la liste des etudiants, avec leur classe, d'une promo
-         * 
-         * @return $rslt
          */
 
-        public function ListePromo()
+        public function ListePromo($db)
         {
-            $requete = "select etudiant.nom, classe.nom, promo.annee
-                        from promo, etudiant, classe
-                        where etudiant.classe=classe.id
-                        order by promo.annee, etudiant.classe, etudiant.nom ";
-            $stmt = $db->prepare($requete);
-            $exec = $stmt->execute();
-            $cmpt = $stmt->rowCount();
-            $rslt = $stmt->fetchAll();
-            
-            return $rslt;
+            $tool = new Utils();
+            $msg = "";
+
+            $requete = "select * from promo order by annee desc;";
+            return $tool->ResultRequest($db, $requete, $msg, $msg);
         }
     }
 

@@ -1,11 +1,11 @@
 <?php
     namespace Controllers;
 
-    include("../Models/Croissant.php");
-    $ModCroissant = new Models\Croissant();
-
-    include("../Models/Demande.php");
-    $ModDemande = new Models\Demande();
+    include ("Models/Croissant.php");
+    include ("Models/Demande.php");
+    use Models\Croissant as Croissant;
+    use Models\Database;
+    use Models\Demande;
 
     final class CntrlCroissant
     {
@@ -23,36 +23,43 @@
 
         function NouveauCroissantage($idCroissanteur, $idCroissanté, $dateCroissantage)
         {
-            $matchIdCr = preg_match('[0-9]+', $idCroissanteur);
+            $ModCroissant = new Croissant();
+            $database = new Database();
+            $db = $database->getConnection();
+
+            $matchIdCr = preg_match('([0-9]+)', $idCroissanteur);
 
             if( !empty($matchIdCr) )
             {
-                $matchIdCd = preg_match('[0-9]+', $idCroissanté);
+                $matchIdCd = preg_match('([0-9]+)', $idCroissanté);
 
                 if( !empty($matchIdCd) )
                 {
-                    $matchDate = preg_match('[0-9]{4}-[0-9]{2}-[0-9]{2}', $dateCroissantage);
+                    $matchDate = preg_match('([0-9]{4}-[0-9]{2}-[0-9]{2})', $dateCroissantage);
 
                     if( !empty($matchDate) )
                     {
-                        $deadline = $dateCroissantage->modify( '+1 week' );
-
-                        $this->ModCroissant->AjoutCroissantage($idCroissanteur, $idCroissanté, $dateCroissantage, $deadline);
+                        $ArrayDate = getdate(strtotime($dateCroissantage));
+                        $dateCroissantage = "'".$dateCroissantage."'";
+                        $deadline = "'".date("Y-m-d", mktime(0, 0, 0, $ArrayDate['mon'], $ArrayDate['mday']+7, $ArrayDate['year']))."'";
+                        $ModCroissant->AjoutCroissantage($db, $idCroissanteur, $idCroissanté, $dateCroissantage, $deadline);
+                        $msg = "Nouveau croissantage enregistré !<br>";
                     }
                     else 
                     {
-                        echo "Date non conforme<br>";
+                        $msg = "Date non conforme<br>";
                     }
                 }
                 else 
                 {
-                    echo "Croissanté non reconnu<br>";
+                    $msg = "Croissanté non reconnu<br>";
                 }
             }
             else 
             {
-                echo "Croissanteur non reconnu<br>";
+                $msg = "Croissanteur non reconnu<br>";
             }
+            return $msg;
         }
 
 
@@ -64,34 +71,55 @@
          * 
          * Fait appel au modele Croissant pour sa fonction "AjoutDemande"
          * 
-         * @see AjoutDemande($croissantage, $etudiant, $viennoise)
-         * @param $croissantage, $etudiant, $viennoise
+         * @see AjoutDemande($croissantage, $etudiant, $viennoiserie)
+         * @param $croissantage, $etudiant, $viennoiserie
          */
 
-        function VoteCroissantage($croissantage, $etudiant, $viennoise)
+        function VoteCroissantage($croissanté, $etudiant, $viennoiserie)
         {
-            $matchCroissantage = preg_match('[0-9]+', $croissantage);
+            $ModDemande = new Demande();
+            $database = new Database();
+            $db = $database->getConnection();
+
+            $matchCroissantage = preg_match('([0-9]+)', $croissanté);
 
             if( !empty($matchCroissantage) )
             {
-                $matchEtudiant = preg_match('[0-9]+', $etudiant);
+                $matchEtudiant = preg_match('([0-9]+)', $etudiant);
 
                 if( !empty($matchEtudiant) )
                 {
-                    $matchViennoiserie = preg_match('[0-9]+', $viennoise);
+                    $matchViennoiserie = preg_match('([0-9]+)', $viennoiserie);
 
                     if( !empty($matchViennoiserie) )
                     {
-                        $this->ModDemande->AjoutDemande($croissantage, $etudiant, $viennoise);
+                        $ModDemande->AjoutDemande($db, $croissanté, $etudiant, $viennoiserie);
+                        $msg = "Une nouvelle demande de viennoiserie vient d'etre effectuée.<br>";
+                    }
+                    else
+                    {
+                        $msg = "Viennoiserie mal renseignée.<br>";
                     }
                 }
+                else
+                {
+                    $msg = "Etudiant effectuant la demande mal renseigné.<br>";
+                }
             }
-
+            else
+            {
+                $msg = "Etudiant croissanté mal renseigné.<br>";
+            }
+            return $msg;
         }
 
         function AfficheCroissant()
         {
-            $liste = $this->ModCroissant->ListeCroissantage();
+            $ModCroissant = new Croissant();
+            $database = new Database();
+            $db = $database->getConnection();
+
+            $liste = $ModCroissant->ListeCroissantage($db);
 
             echo "<table>";
             foreach($liste as $ModCroissantage)
@@ -107,15 +135,23 @@
             echo "</table>";
         }
 
+        /**
+         * Permet de sélectionner une viennoiserie parmis celle renseignée en base de données
+         */
+
         function SelectViennoiseries($nomPost)
         {
-            $liste = $this->ModCroissant->zListerViennoiseries();
+            $ModCroissant = new Croissant();
+            $database = new Database();
+            $db = $database->getConnection();
+
+            $liste = $ModCroissant->ListerViennoiseries($db);
 
             echo "<select name='$nomPost'>";
 
-            foreach($liste as $viennoise)
+            foreach($liste as $viennoiserie)
             {
-                echo "<option value='".$viennoise['id']."'>".$viennoise['nom']."</option>";
+                echo "<option value='".$viennoiserie['id']."'>".$viennoiserie['nom']."</option>";
             }
             
             echo "</select>";

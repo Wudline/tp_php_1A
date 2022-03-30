@@ -1,58 +1,52 @@
 <?php
     namespace Models;
 
+    use Tools\Utils as Utils;
+
     class Croissant {
     
         /**
          * NouveauCroissantage
          * insertion en base d'un nouveau croissantage
          * 
-         * @param $idCer, $idCed, $dateC, $deadline
+         * @param $idCer,
+         * @param $idCed,
+         * @param $dateC,
+         * @param $deadline
          */
 
-        public function NouveauCroissantage($idCer, $idCed, $dateC, $deadline)
+        public function AjoutCroissantage($db, $idCer, $idCed, $dateC, $deadline)
         {
-            $requete = "insert into croissantage (croissanteur,	croissante,	dateCroissantage, deadline) 
-                        values (DEFAULT, $idCer, $idCed, $dateC, $deadline)";
-            $insert = $db->query($requete);
+            $requete = "insert into croissantage values (DEFAULT, $idCer, $idCed, $dateC, $deadline)";
+            $db->query($requete);
         }
         
             
         /**
          * ListeCroissantage
          * retourne la liste de tous les croissantages
-         * 
-         * @return $rslt
          */
 
-        public function ListeCroissantage()
+        public function ListeCroissantage($db)
         {
+            $msg = "";
+            $tool = new Utils();
             $requete = "select * from croissantage order by dateCroissantage desc";
-            $stmt = $db->prepare($requete);
-            $exec = $stmt->execute();
-            $cmpt = $stmt->rowCount();
-            $rslt = $stmt->fetchAll();  
-            
-            return $rslt;
+            return $tool->ResultRequest($db, $requete, $msg, $msg);
         }
 
         
         /**
          * ListeViennoiseries
          * retourne la liste de toutes les viennoiseries
-         * 
-         * @return $rslt
          */
 
-        public function ListeViennoiserie()
+        public function ListerViennoiseries($db)
         {
+            $msg = "";
+            $tool = new Utils();
             $requete = "select * from viennoiserie;";
-            $stmt = $db->prepare($requete);
-            $exec = $stmt->execute();
-            $cmpt = $stmt->rowCount();
-            $rslt = $stmt->fetchAll();  
-            
-            return $rslt;
+            return $tool->ResultRequest($db, $requete, $msg, $msg);
         }
     }
 

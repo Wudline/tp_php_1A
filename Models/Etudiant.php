@@ -1,72 +1,71 @@
 <?php
     namespace Models;
 
-    class Etudiant {
-    
-        private $login;
-        private $nom;
-        private $msp;
-        private $viennoiserie;
-        private $classee;
-        private $promo;
+    use Tools\Utils as Utils;
 
-        
+    class Etudiant
+    {
+        /**
+         * ModifierClasseEtudiant
+         * modification de la classe d'un étudiant en bas
+         */
+
+        public function getNom($db, $id)
+        {
+            $msg = "";
+            $tool = new Utils();
+
+            $requete = "select nom from etudiant where id=$id;";
+            return $tool->ResultRequest($db, $requete, $msg, $msg);
+        }
+
+
         /**
          * AjouterEtudiant
          * insertion en base d'un nouvel étudiant
-         * 
-         * @return $rslt
+         * insertion dudit etudiant en promo
          */
 
-        public function AjouterEtudiant($login, $nom, $mdp, $viennoiserie, $classe, $promo, $droit)
+        public function AjouterEtudiant($db, $login, $nom, $mdp, $classe, $promo, $droit)
         {
-            $requete = "insert into etudiant values (DEFAULT, $login, $nom, $mdp, $viennoiserie, $droit)";
-            $insert = $db->query($requete);            
-
-            $requete = "insert into Promo values (DEFAULT, $promo, $classe, $id)";
-            $insert = $db->query($requete);
+            $requete = "insert into etudiant values (DEFAULT, $login, $nom, $mdp, $classe, $promo, $droit)";
+            $db->query($requete);
         }
 
         
         /**
          * ModifierClasseEtudiant
-         * modification de la classe d'un étudiant en base
-         * 
-         * @return $rslt
+         * modification de la classe d'un étudiant en bas
          */
 
-        public function ModifierClasseEtudiant($id, $classe)
+        public function ModifierClasseEtudiant($db, $id, $classe)
         {
-            $requete = "update etudiant set lasse='".addslashes($classe)."' where id=$id;";
-            $update = $db->query($requete);
+            $requete = "update etudiant set classe='".addslashes($classe)."' where id=$id;";
+            $db->query($requete);
         }
 
         
         /**
          * ModifierMdpEtudiant
          * modification du mdp d'un étudiant en base
-         * 
-         * @return $rslt
          */
 
-        public function ModifierMdpEtudiant($id, $mdp)
+        public function ModifierMdpEtudiant($db, $id, $mdp)
         {
             $requete = "update etudiant set mdp='".addslashes($mdp)."' where id=$id;";
-            $update = $db->query($requete);
+            $db->query($requete);
         }
 
         
         /**
          * ModifierDroitsEtudiant
          * modification des droits d'un étudiant en base
-         * 
-         * @return $rslt
          */
 
-        public function ModifierDroitsEtudiant($id, $droit)
+        public function ModifierDroitsEtudiant($db, $id, $droit)
         {
-            $requete = "update etudiant set droits='".addslashes($droit)."' where id=$id;";
-            $update = $db->query($requete);
+            $requete = "update etudiant set role='".addslashes($droit)."' where id=$id;";
+            $db->query($requete);
         }
 
         
@@ -75,32 +74,51 @@
          * retourne la liste de tous les etudiants d'une classe et d'une promo donnée
          * si les parametre sont vide, retourne l'ensemble des étudiants référencés
          * 
-         * @param $classe, $promo
-         * @return $rslt
+         * @param $classe
+         * @param $promo
+         *
          */
 
-        public function ListeEtudiant($classe, $promo)
+        public function ListeEtudiants($db, $classe, $promo)
         {
-            $requete = "select * from etudiant where id not null "; 
+            $msg = "";
+            $tool = new Utils();
+
+            $requete = "select * from etudiant where id!='NULL' ";
 
             if( !empty($classe) )
             {
-                $requete .= "and classe='$classe' ";
+                $reqTmp = "select id from classe where nom='".addslashes($classe)."'; ";
+                $idClasse = $tool->ResultRequest($db, $reqTmp, $msg, $msg);
+
+                $requete .= "and classe='".addslashes($idClasse[0]['id'])."' ";
             }
 
             if( !empty($promo) )
             {
-                $requete .= "and promo='$promo' ";
+                $reqTmp = "select id from promo where annee='".addslashes($promo)."'; ";
+                $idPromo = $tool->ResultRequest($db, $reqTmp, $msg, $msg);
+
+                $requete .= "and promo='".addslashes($idPromo[0]['id'])."' ";
             }
             
             $requete .= "order by nom, classe, promo";
-            
-            $stmt = $db->prepare($requete);
-            $exec = $stmt->execute();
-            $cmpt = $stmt->rowCount();
-            $rslt = $stmt->fetchAll();  
-            
-            return $rslt;
+            return $tool->ResultRequest($db, $requete, $msg, $msg);
+        }
+
+
+        /**
+         * ListeRoles
+         * retourne la liste de tous les roles référencés
+         *
+         */
+
+        public function ListeRoles($db)
+        {
+            $msg = "";
+            $tool = new Utils();
+            $requete = "select * from role";
+            return $tool->ResultRequest($db, $requete, $msg, $msg);
         }
     }
 

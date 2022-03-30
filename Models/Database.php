@@ -25,7 +25,7 @@
                 $this->conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);        
                 // $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 
-                echo "connexion à la bdd réussie";
+                // echo "connexion à la bdd réussie";
             }                        
             catch(PDOException $exception)
             {

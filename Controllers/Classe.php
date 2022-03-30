@@ -1,8 +1,9 @@
 <?php
     namespace Controllers;
 
-    include("../Models/Classe.php");
-    $cl = new Models\Classe();
+    include("Models/Classe.php");
+    use Models\Classe;
+    use Models\Database;
 
     final class CntrlClasse
     {
@@ -12,12 +13,17 @@
          * fait appel au modele Classe pour sa fonction "ListeEtudiant"
          * 
          * @see ListeEtudiant($classe, $promo)
-         * @param $classe, $promo
+         * @param $classe,
+         * @param $promo
          */
 
         function AfficheClasse($classe, $promo)
         {
-            $liste = $cl->ListeClasse($classe, $promo);
+            $cl = new Classe();
+            $database = new Database();
+            $db = $database->getConnection();
+
+            $liste = $cl->ListeClasse($db, $classe, $promo);
     
             echo "<table>";
             foreach($liste as $etudiant)
@@ -31,6 +37,28 @@
                 echo "</tr>";
             }
             echo "</table>";
+        }
+
+        /**
+         * Permet de sélectionner une classe parmis celle renseignée en base de données
+         */
+
+        function SelectClasses($nomPost)
+        {
+            $ModClas = new Classe();
+            $database = new Database();
+            $db = $database->getConnection();
+
+            $liste = $ModClas->ListeClasse($db);
+
+            echo "<select name='$nomPost'>";
+
+            foreach($liste as $classe)
+            {
+                echo "<option value='".$classe['id']."'>".$classe['nom']."</option>";
+            }
+
+            echo "</select>";
         }
     }
 
