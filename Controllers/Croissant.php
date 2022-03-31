@@ -157,6 +157,23 @@
             
             echo "</select>";
         }
+
+        function AfficheDateCroissantage ()
+        {
+            $ModCroissant = new Croissant();
+            $database = new Database();
+            $db = $database->getConnection();
+
+            $date = $ModCroissant->getDateCroissantage($db, $_SESSION['idlog']);
+            $dl = $ModCroissant->getDateLimite($db, $_SESSION['idlog']);
+            $ajrd = date("Y-m-d");
+
+            if ($date < $dl && $dl > $ajrd)
+            {
+                echo $date." - ATTENTION : date limite de commande le ".$dl;
+            }
+
+        }
     }
     
 ?>

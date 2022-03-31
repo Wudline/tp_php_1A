@@ -48,6 +48,25 @@
             $requete = "select * from viennoiserie;";
             return $tool->ResultRequest($db, $requete, $msg, $msg);
         }
+
+        function getDateCroissantage ($db, $id)
+        {
+            $msg = "";
+            $tool = new Utils();
+            $requete = "select dateCroissantage from croissantage where croissante=$id;";
+            $tab = $tool->ResultRequest($db, $requete, $msg, $msg);
+            return $tab[0][0];
+        }
+
+
+        function getDateLimite ($db, $id)
+        {
+            $msg = "";
+            $tool = new Utils();
+            $requete = "select deadline from croissantage where croissante=$id;";
+            $tab = $tool->ResultRequest($db, $requete, $msg, $msg);
+            return $tab[0][0];
+        }
     }
 
 ?>

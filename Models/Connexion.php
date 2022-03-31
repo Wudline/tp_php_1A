@@ -44,7 +44,7 @@
 
                         if( $mdp == $res[0]['mdp'] )
                         {
-                            $rq = "select etudiant.nom, role.nom as role, classe.nom as classe, promo.annee 
+                            $rq = "select etudiant.id as id, etudiant.nom, role.nom as role, classe.nom as classe, promo.annee 
                                    from etudiant, role, classe, promo 
                                    where etudiant.login='".addslashes($login)."' 
                                    and role.id=etudiant.role
@@ -52,6 +52,7 @@
                                    and promo.id=etudiant.promo;";
                             $rs = $tool->ResultRequest($db, $rq, $msgNullCmpt, $msgNullExec);
 
+                            $_SESSION['idlog'] = $rs[0]["id"];
                             $_SESSION['login'] = $login;
                             $_SESSION['nom'] = $rs[0]["nom"];
                             $_SESSION['role'] = $rs[0]["role"];

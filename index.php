@@ -11,6 +11,9 @@
     use Controllers\CntrlStatistiques as CntrlStats;
     $CtrlStat = new CntrlStats();
 
+    include ("Tools/CSRF.php");
+    use Tools\CSRF as CSRF;
+
 
     if( isset($_POST['Connexion']) )
     {
@@ -50,6 +53,8 @@
     }
     else
     {
+        $csrf = new CSRF();
+        echo $csrf->createToken();
     ?>
         <article>
             <h1>Bonjour <?php echo $_SESSION['nom']; ?></h1>
@@ -73,6 +78,7 @@
       </body>
 
     <footer>
-    <?php echo date('d/m/Y'); ?>
+        <?php echo date('d/m/Y'); ?>
+        <a href="Controllers/Deconnexion.php">Déconnexion</a>
     </footer>
 </html>

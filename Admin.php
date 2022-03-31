@@ -1,11 +1,7 @@
 <?php
     namespace View;
 
-    // foreach($_POST as $k=>$v){echo "POST : ".$k."=>".$v."<br>";}
-    // foreach ($_SESSION as $k=>$v) { echo "SESSION : ".$k."=>".$v."<br>"; }
-
-    //    include("Controllers/Statistiques.php");
-    include("Controllers/Classe.pqhp");
+    include("Controllers/Classe.php");
     include("Controllers/Croissant.php");
     include("Controllers/Etudiant.php");
     include("Controllers/Promo.php");
@@ -14,13 +10,11 @@
     use Controllers\CntrlCroissant as CntrlCroissant;
     use Controllers\CntrlEtudiant as CntrlEtudiant;
     use Controllers\CntrlPromo as CntrlPromo;
-    //    use Controllers\CntrlStatistiques as CntrlStats;
 
     $CtrlClas = new CntrlClasse();
     $CtrlCroi = new CntrlCroissant();
     $CtrlEtud = new CntrlEtudiant();
     $CtrlProm = new CntrlPromo();
-    //    $CtrlStat = new CntrlStats();
 
 
     if( isset($_POST['NouvelEtudiant']) )
@@ -98,6 +92,25 @@
             <input type="date" name="dateCommande">
 
             <input type="submit" name="NouveauCroissantage" value="Croissantage">
+        </form>
+    </article>
+
+    <hr>
+    <hr>
+
+    <article>
+        <h3>Vote Viennoiserie</h3>
+        <form method='post'>
+
+            <label>Suite au croissantage de : </label>
+            <?php $CtrlEtud->SelectEtudiants("Croissanté", "", ""); ?>
+
+            <label>je demande : </label>
+            <?php $CtrlCroi->SelectViennoiseries("Viennoiserie", "", ""); ?>
+
+            <input type="hidden"  name="Etudiant" value="<?php echo $_SESSION['idlog']; ?>">
+
+            <input type="submit" name="VoteCroissantage" value="Demander">
         </form>
     </article>
 
