@@ -1,11 +1,10 @@
 <?php
-    echo "_POST : <br>";
-    foreach($_POST as $k=>$v){echo $k."=>".$v."<br>";}
+    namespace View;
 
-    // echo "_SESSION : <br>";
-    // foreach ($_SESSION as $k=>$v) { echo $k."=>".$v."<br>"; }
+    // foreach($_POST as $k=>$v){echo "POST : ".$k."=>".$v."<br>";}
+    // foreach ($_SESSION as $k=>$v) { echo "SESSION : ".$k."=>".$v."<br>"; }
 
-    include("Controllers/Statistiques.php");
+    //    include("Controllers/Statistiques.php");
     include("Controllers/Classe.php");
     include("Controllers/Croissant.php");
     include("Controllers/Etudiant.php");
@@ -15,13 +14,13 @@
     use Controllers\CntrlCroissant as CntrlCroissant;
     use Controllers\CntrlEtudiant as CntrlEtudiant;
     use Controllers\CntrlPromo as CntrlPromo;
-    use Controllers\CntrlStatistiques as CntrlStats;
+    //    use Controllers\CntrlStatistiques as CntrlStats;
 
     $CtrlClas = new CntrlClasse();
     $CtrlCroi = new CntrlCroissant();
     $CtrlEtud = new CntrlEtudiant();
     $CtrlProm = new CntrlPromo();
-    $CtrlStat = new CntrlStats();
+    //    $CtrlStat = new CntrlStats();
 
 
     if( isset($_POST['NouvelEtudiant']) )
@@ -46,89 +45,83 @@
 
 ?>
 
-<!DOCTYPE html>
-<html lang="fr">
-    <head>
-        <meta charset="utf-8">
-        <title>Projet - admin</title>
-        <!-- <link rel="stylesheet" type="text/css" href="../style.css"> -->
-    </head>
+    <hr>
+    <hr>
 
-    <header>
-        <h1>Croissantage</h1>
-        <h4>Le meilleur croissanteur toutes catégories confondues : </h4>
-        <?php  $CtrlStat->ShowMeilleurCroissanteur(); ?>
-    </header>
+    <article>
+        <h3>Nouvel Etudiant</h3>
+        <form method='post'>
+            <input type="text" name="login" pattern="[A-Za-z]{1,10}.[A-Za-z]{1,10}" placeholder="Login">
+            <input type="text" name="nom" placeholder="nom"><!-- pattern="[A-Za-z ]{3,50}'" -->
+            <input type="password" name="mdp" pattern="[0-9A-Za-z?./!*$@&]{3,10}" placeholder="Password">
+            <?php $CtrlClas->SelectClasses("Classe"); ?>
+            <?php $CtrlProm->SelectPromo("Promo"); ?>
+            <?php $CtrlEtud->SelectRole("Role"); ?>
 
-    <body>
-        <article>
-            <h3>Nouvel Etudiant</h3>
-            <form method='post'>
-                <input type="text" name="login" pattern="[A-Za-z]{1,10}.[A-Za-z]{1,10}" placeholder="Login">
-                <input type="text" name="nom" placeholder="nom"><!-- pattern="[A-Za-z ]{3,50}'" -->
-                <input type="password" name="mdp" pattern="[0-9A-Za-z?./!*$@&]{3,10}" placeholder="Password">
-                <?php $CtrlClas->SelectClasses("Classe"); ?>
-                <?php $CtrlProm->SelectPromo("Promo"); ?>
-                <?php $CtrlEtud->SelectRole("Role"); ?>
+            <input type="submit" name="NouvelEtudiant" value="Ajouter">
+        </form>
+    </article>
 
-                <input type="submit" name="NouvelEtudiant" value="Ajouter">
-            </form>
-        </article>
+    <hr>
+    <hr>
 
-
-        <article>
-            <h3>Modifier Etudiant</h3>
-            <form method='post'>
-                <?php $CtrlEtud->SelectEtudiants("Etudiant", "IMR", "2022"); ?>
-                <input type="password" name="mdp" pattern="[0-9A-Za-z?./!*$@&]{3,10}" placeholder="Password">
-                <?php $CtrlClas->SelectClasses("Classe"); ?>
-                <?php $CtrlEtud->SelectRole("Role"); ?>
+    <article>
+        <h3>Modifier Etudiant</h3>
+        <form method='post'>
+            <?php $CtrlEtud->SelectEtudiants("Etudiant", "IMR", "2022"); ?>
+            <input type="password" name="mdp" pattern="[0-9A-Za-z?./!*$@&]{3,10}" placeholder="Password">
+            <?php $CtrlClas->SelectClasses("Classe"); ?>
+            <?php $CtrlEtud->SelectRole("Role"); ?>
 
 
-                <input type="submit" name="ModifierEtudiant" value="Modifier">
-            </form>
-        </article>
+            <input type="submit" name="ModifierEtudiant" value="Modifier">
+        </form>
+    </article>
 
-        <article>
-            <h3>Nouveau Croissantage</h3>
-            <form method='post'>
+    <hr>
+    <hr>
 
-                <label>Croissanteur</label>
-                <?php $CtrlEtud->SelectEtudiants("Croissanteur", "", ""); ?>
+    <article>
+        <h3>Nouveau Croissantage</h3>
+        <form method='post'>
 
-                <label>Croissanté</label>
-                <?php $CtrlEtud->SelectEtudiants("Croissanté", "", ""); ?>
+            <label>Croissanteur</label>
+            <?php $CtrlEtud->SelectEtudiants("Croissanteur", "", ""); ?>
 
-                <label>Date du Croissantage</label>
-                <input type="date" name="dateCroissantage">
+            <label>Croissanté</label>
+            <?php $CtrlEtud->SelectEtudiants("Croissanté", "", ""); ?>
 
-                <label>Date de la Commande</label>
-                <input type="date" name="dateCommande">
+            <label>Date du Croissantage</label>
+            <input type="date" name="dateCroissantage">
 
-                <input type="submit" name="NouveauCroissantage" value="Croissantage">
-            </form>
-        </article>
+            <label>Date de la Commande</label>
+            <input type="date" name="dateCommande">
 
-        <article>
-            <h3>Vote Viennoiserie</h3>
-            <form method='post'>
+            <input type="submit" name="NouveauCroissantage" value="Croissantage">
+        </form>
+    </article>
 
-                <label>Réponse au croissantage de :</label>
-                <?php $CtrlEtud->SelectEtudiants("Croissanté", "", ""); ?>
+    <hr>
+    <hr>
 
-                <label>Etudiant</label>
-                <?php $CtrlEtud->SelectEtudiants("Etudiant", "", ""); ?>
+    <article>
+        <h3>Liste des étudiants</h3>
+        <label>IMR - 2020</label>
+        <?php $CtrlEtud->AfficheEtudiants("IMR", "2020"); ?>
+        <br>
+        <label>IPS - 2020</label>
+        <?php $CtrlEtud->AfficheEtudiants("IPS", "2020"); ?>
+        <hr>
+        <label>IMR - 2021</label>
+        <?php $CtrlEtud->AfficheEtudiants("IMR", "2021"); ?>
+        <br>
+        <label>IPS - 2021</label>
+        <?php $CtrlEtud->AfficheEtudiants("IPS", "2021"); ?>
+        <hr>
+        <label>IMR - 2022</label>
+        <?php $CtrlEtud->AfficheEtudiants("IMR", "2022"); ?>
+        <br>
+        <label>IPS - 2022</label>
+        <?php $CtrlEtud->AfficheEtudiants("IPS", "2022"); ?>
 
-                <label>Viennoiserie</label>
-                <?php $CtrlCroi->SelectViennoiseries("Viennoiserie"); ?>
-
-                <input type="submit" name="VoteCroissantage" value="Choix">
-            </form>
-        </article>
-
-      </body>
-
-    <footer>
-    <?php echo date('d/m/Y'); ?>
-    </footer>
-</html>
+    </article>

@@ -1,10 +1,10 @@
 <?php
     namespace Controllers;
 
+    include("Models/Promo.php");
+
     use Models\Promo;
     use Models\Database;
-
-    include("Models/Promo.php");
 
     final class CntrlPromo
     {

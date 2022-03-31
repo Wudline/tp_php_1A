@@ -1,15 +1,15 @@
 <?php
     namespace Controllers;
 
-    include("Models/Database.php");
-
+    include ("Models/Statistiques.php");
     use Models\Database;
-    use Models\Statistiques as Statistiques;
+    use Models\Statistiques as ModStats;
+    use Tools\Utils;
 
     final class CntrlStatistiques
     {
         function ShowMeilleurCroissanteur(){
-            $ModStat = new Statistiques();
+            $ModStat = new ModStats();
             $database = new Database();
             $db = $database->getConnection();
 
@@ -28,6 +28,36 @@
                     echo "<td>Rôle : ".$data[0][3]."</td>";
                 echo "</tr>";
             echo "</table>";
+        }
+
+        function AfficheNbFoisCroissanté()
+        {
+            $database = new Database();
+            $ModStat = new ModStats();
+            $tool = new Utils();
+
+            $db = $database->getConnection();
+            $msg = "error";
+
+            $req = "select id from etudiant where login='".addslashes($_SESSION['login'])."'";
+            $res = $tool->ResultRequest($db, $req, $msg, $msg);
+            $tabRes = $ModStat->CptCroissanté($db, $res[0]['id']);
+            echo $tabRes[0][0];
+        }
+
+        function AfficheNbCroissantage()
+        {
+            $database = new Database();
+            $ModStat = new ModStats();
+            $tool = new Utils();
+
+            $db = $database->getConnection();
+            $msg = "error";
+
+            $req = "select id from etudiant where login='".addslashes($_SESSION['login'])."'";
+            $res = $tool->ResultRequest($db, $req, $msg, $msg);
+            $tabRes = $ModStat->CptCroissantage($db, $res[0]['id']);
+            echo $tabRes[0][0];
         }
     }
 

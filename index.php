@@ -1,22 +1,16 @@
 <?php
     namespace View;
 
-    include("Controllers/Statistiques.php");
-    include("Controllers/Classe.php");
-    include("Controllers/Croissant.php");
-    include("Controllers/Etudiant.php");
-    include("Controllers/Promo.php");
-
-    use Controllers\CntrlStatistiques as CntrlStats;
-    use Controllers\CntrlClasse as CntrlClasse;
-    use Controllers\CntrlCroissant as CntrlCroissant;
-    use Controllers\CntrlEtudiant as CntrlEtudiant;
-    use Controllers\CntrlPromo as CntrlPromo;
-
     foreach($_POST as $k=>$v){echo $k."=>".$v."<br>";}
+    foreach ($_SESSION as $k=>$v) { echo "SESSION : ".$k."=>".$v."<br>"; }
 
     include("Models/Connexion.php");
     use Models\Connexion as Connexion;
+
+    include("Controllers/Statistiques.php");
+    use Controllers\CntrlStatistiques as CntrlStats;
+    $CtrlStat = new CntrlStats();
+
 
     if( isset($_POST['Connexion']) )
     {
@@ -33,14 +27,11 @@
         <title>Projet - index</title>
         <!-- <link rel="stylesheet" type="text/css" href="../style.css"> -->
     </head>
-
-    <header>
-        <h1>Croissantage</h1>
-    </header>
-
     <body>
 
     <?php if (!isset($_SESSION)){ ?>
+        <h1>Croissantage</h1>
+
         <article>
             <h2>See you!</h2>
             <p>Neko! Neko! nya~ !</p>
@@ -57,13 +48,25 @@
         </article>
     <?php
     }
-    elseif ( $_SESSION["role"]=="admin" )
+    else
     {
-        // include ("Admin.php");
-    }
-    elseif ( $_SESSION["role"]=="etudiant" )
-    {
-        echo "We're all mad here...<br>";
+    ?>
+        <article>
+            <h1>Bonjour <?php echo $_SESSION['nom']; ?></h1>
+            <h4>Le meilleur croissanteur toutes catégories confondues : </h4>
+            <?php  $CtrlStat->ShowMeilleurCroissanteur(); ?>
+            <h4>Nombre de croissantages essuyés : <?php  $CtrlStat->AfficheNbFoisCroissanté(); ?></h4>
+            <h4>Nombre de croissantages effectués : <?php  $CtrlStat->AfficheNbCroissantage(); ?></h4>
+        </article>
+    <?php
+        if ( $_SESSION["role"]=="admin" )
+        {
+            include ("Admin.php");
+        }
+        elseif ( $_SESSION["role"]=="etudiant" )
+        {
+            include ("Accueil.php");
+        }
     }
     ?>
 

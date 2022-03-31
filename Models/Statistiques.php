@@ -1,7 +1,6 @@
 <?php
     namespace Models;
 
-    include ("Tools/Utils.php");
     use Tools\Utils as Utils;
 
     class Statistiques
@@ -48,18 +47,15 @@
         {
             $msg = "";
             $tool = new Utils();
-            $requete = "select etudiant.nom, classe.nom, promo.annee, role.nom
-                        from etudiant, classe, promo, role 
-                        where etudiant.id=( 
-                            select max(croissanteur) 
-                            from croissantage 
-                            group by croissanteur 
-                            order by croissanteur 
-                            desc limit 1 
-                        ) 
+            $requete = "select etudiant.nom, classe.nom, promo.annee, role.nom, croissantage.croissanteur, count(*) as occurrences 
+                        from croissantage, etudiant, promo, classe, role 
+                        where etudiant.id=croissantage.croissanteur 
                         and etudiant.classe=classe.id 
                         and etudiant.promo=promo.id
-                        and etudiant.role=role.id;";
+                        and etudiant.role=role.id
+                        group by croissanteur 
+                        order by occurrences 
+                        desc limit 1 ";
             return $tool->ResultRequest($db, $requete, $msg, $msg);
         }
     }

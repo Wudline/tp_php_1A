@@ -10,13 +10,23 @@
          * modification de la classe d'un étudiant en bas
          */
 
-        public function getNom($db, $id)
+        public function getNom($db, $id, $table)
         {
             $msg = "";
             $tool = new Utils();
 
-            $requete = "select nom from etudiant where id=$id;";
-            return $tool->ResultRequest($db, $requete, $msg, $msg);
+            $requete = "select nom from $table where id=$id;";
+            $tab = $tool->ResultRequest($db, $requete, $msg, $msg);
+            return $tab[0]['nom'];
+        }
+        public function getPromo($db, $id)
+        {
+            $msg = "";
+            $tool = new Utils();
+
+            $requete = "select annee from promo where id=$id;";
+            $tab = $tool->ResultRequest($db, $requete, $msg, $msg);
+            return $tab[0]['annee'];
         }
 
 
@@ -102,7 +112,35 @@
                 $requete .= "and promo='".addslashes($idPromo[0]['id'])."' ";
             }
             
-            $requete .= "order by nom, classe, promo";
+            $requete .= "order by promo desc, classe, role, nom";
+            return $tool->ResultRequest($db, $requete, $msg, $msg);
+        }
+
+        function AffCompltEtu ($db, $classe, $promo)
+        {
+            $msg = "";
+            $tool = new Utils();
+
+            $requete = "select etudiant.login, etudiant.nom, classe.nom, promo.annee from etudiant, classe, promo, role where etudiant.role=role.id ";
+
+            if( !empty($classe) )
+            {
+                $reqTmp = "select id from classe where nom='".addslashes($classe)."'; ";
+                $idClasse = $tool->ResultRequest($db, $reqTmp, $msg, $msg);
+
+                // $requete .= "and classe='".addslashes($idClasse[0]['id'])."' ";
+                $requete .= "and etudiant.classe=classe.id and classe.nom='$classe' ";
+            }
+
+            if( !empty($promo) )
+            {
+                $reqTmp = "select id from promo where annee='".addslashes($promo)."'; ";
+                $idPromo = $tool->ResultRequest($db, $reqTmp, $msg, $msg);
+
+                $requete .= "and etudiant.promo=promo.id and promo.annee='$promo' ";
+            }
+
+            $requete .= "order by etudiant.promo desc, etudiant.classe, etudiant.role, etudiant.nom";
             return $tool->ResultRequest($db, $requete, $msg, $msg);
         }
 

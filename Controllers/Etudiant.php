@@ -1,11 +1,10 @@
 <?php
     namespace Controllers;
 
-    include("Models/Statistiques.php");
     include("Models/Etudiant.php");
 
     use Models\Database;
-    use Models\Statistiques as Statistiques;
+    use Models\Statistiques as ModStats;
     use Models\Etudiant as Etudiant;
 
     final class CntrlEtudiant
@@ -44,7 +43,7 @@
 
                 $matchLog = preg_match('([A-Za-z]{1,10}.[A-Za-z]{1,10}[0-9]?)', $login);
                 $matchAli = preg_match('([A-Za-z ]{3,50})', $nom);
-                $matchmdp = preg_match('([0-9A-Za-z?./!\*\$@&]{3,10})', $mdp);
+                $matchmdp = preg_match('([0-9A-Za-z?./!*$@&]{3,10})', $mdp);
                 $matchCla = preg_match('([0-9]+)', $classe);
                 $matchDrt = preg_match('([0-9]+)', $role);
                 $matchYea = preg_match('([0-9]+)', $promo);
@@ -126,7 +125,7 @@
 
                 if( $matchIdS && $matchClasse ){
                     $ModEtu->ModifierClasseEtudiant($db, $idStudent, $classe);
-                    $nom = $ModEtu->getNom($db, $idStudent);
+                    $nom = $ModEtu->getNom($db, $idStudent, "etudiant");
                     $msg = "$nom a été changé(e) de classe";
                 }
                 else {
@@ -166,7 +165,7 @@
 
                 if( $matchIdS && $matchmdp ){
                     $ModEtu->ModifierMdpEtudiant($db, $idStudent, $mdp);
-                    $nom = $ModEtu->getNom($db, $idStudent);
+                    $nom = $ModEtu->getNom($db, $idStudent, "etudiant");
                     $msg = "Le mot de passe de $nom a été modifié";            
                 }
                 else {
@@ -204,7 +203,7 @@
 
                 if( $matchId && $matchDroits ){
                     $ModEtu->ModifierDroitsEtudiant($db, $idStudent, $role);
-                    $nom = $ModEtu->getNom($db, $idStudent);
+                    $nom = $ModEtu->getNom($db, $idStudent,"etudiant");
                     $msg = "Les droits de $nom ont été modifiés";
                 }
                 else {
@@ -281,7 +280,7 @@
          */
         function AfficheEtudiants($classe, $promo)
         {
-            $ModStat = new Statistiques();
+            $ModStat = new ModStats();
             $ModEtu = new Etudiant();
             $database = new Database();
             $db = $database->getConnection();
@@ -289,6 +288,16 @@
             $liste = $ModEtu->ListeEtudiants($db, $classe, $promo);
 
             echo "<table>";
+            echo "<tr>";
+            echo "<td style='text-align: center'>login</td>";
+            echo "<td style='text-align: center'>nom</td>";
+            echo "<td style='text-align: center'>classe</td>";
+            echo "<td style='text-align: center'>promo</td>";
+            echo "<td style='text-align: center'>role</td>";
+            echo "<td style='text-align: center'>Croissantages</td>";
+            echo "<td style='text-align: center'>Croissanté</td>";
+            echo "</tr>";
+
             foreach($liste as $etu)
             {
                 $nbrCroissantage = $ModStat->CptCroissantage($db, $etu['id']);
@@ -298,12 +307,12 @@
 
                 echo "<td>".$etu['login']."</td>";
                 echo "<td>".$etu['nom']."</td>";
-                echo "<td>".$etu['classe']."</td>";
-                echo "<td>".$etu['promo']."</td>";
-                echo "<td>".$etu['viennoiserie']."</td>";
-                echo "<td>".$nbrCroissantage."</td>";
-                echo "<td>".$nFoisCroissanté."</td>";
-                
+                echo "<td style='text-align: center'>".$ModEtu->getNom($db, $etu['classe'], "classe")."</td>";
+                echo "<td style='text-align: center'>".$ModEtu->getPromo($db, $etu['promo'])."</td>";
+                echo "<td style='text-align: center'>".$ModEtu->getNom($db, $etu['role'], "role")."</td>";
+                echo "<td style='text-align: center'>".$nbrCroissantage[0][0]."</td>";
+                echo "<td style='text-align: center'>".$nFoisCroissanté[0][0]."</td>";
+
                 echo "</tr>";
             }
             echo "</table>";

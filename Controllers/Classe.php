@@ -2,6 +2,7 @@
     namespace Controllers;
 
     include("Models/Classe.php");
+
     use Models\Classe;
     use Models\Database;
 
