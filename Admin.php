@@ -5,7 +5,7 @@
     // foreach ($_SESSION as $k=>$v) { echo "SESSION : ".$k."=>".$v."<br>"; }
 
     //    include("Controllers/Statistiques.php");
-    include("Controllers/Classe.php");
+    include("Controllers/Classe.pqhp");
     include("Controllers/Croissant.php");
     include("Controllers/Etudiant.php");
     include("Controllers/Promo.php");
