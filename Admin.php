@@ -34,13 +34,14 @@
 
     if( isset($_POST['VoteCroissantage']) )
     {
-        echo $CtrlCroi->VoteCroissantage($_POST["Croissanté"], $_POST["Etudiant"], $_POST["Viennoiserie"]);
+        echo $CtrlCroi->VoteCroissantage($_POST["hadLose"], $_POST["Etudiant"], $_POST["Viennoiserie"]);
     }
 
+    if( isset($_POST['Commande']) )
+    {
+        echo $CtrlCroi->Commande($_POST["dateCmd"]);
+    }
 ?>
-
-    <hr>
-    <hr>
 
     <article>
         <h3>Nouvel Etudiant</h3>
@@ -56,9 +57,6 @@
         </form>
     </article>
 
-    <hr>
-    <hr>
-
     <article>
         <h3>Modifier Etudiant</h3>
         <form method='post'>
@@ -71,9 +69,6 @@
             <input type="submit" name="ModifierEtudiant" value="Modifier">
         </form>
     </article>
-
-    <hr>
-    <hr>
 
     <article>
         <h3>Nouveau Croissantage</h3>
@@ -95,15 +90,12 @@
         </form>
     </article>
 
-    <hr>
-    <hr>
-
     <article>
         <h3>Vote Viennoiserie</h3>
         <form method='post'>
 
             <label>Suite au croissantage de : </label>
-            <?php $CtrlEtud->SelectEtudiants("Croissanté", "", ""); ?>
+            <?php $CtrlEtud->SelectEtudiants("hadLose", "", ""); ?>
 
             <label>je demande : </label>
             <?php $CtrlCroi->SelectViennoiseries("Viennoiserie", "", ""); ?>
@@ -114,8 +106,7 @@
         </form>
     </article>
 
-    <hr>
-    <hr>
+    <?php $CtrlCroi->AfficheDateCroissantage(); ?>
 
     <article>
         <h3>Liste des étudiants</h3>
@@ -124,17 +115,16 @@
         <br>
         <label>IPS - 2020</label>
         <?php $CtrlEtud->AfficheEtudiants("IPS", "2020"); ?>
-        <hr>
+        <br>
         <label>IMR - 2021</label>
         <?php $CtrlEtud->AfficheEtudiants("IMR", "2021"); ?>
         <br>
         <label>IPS - 2021</label>
         <?php $CtrlEtud->AfficheEtudiants("IPS", "2021"); ?>
-        <hr>
+        <br>
         <label>IMR - 2022</label>
         <?php $CtrlEtud->AfficheEtudiants("IMR", "2022"); ?>
         <br>
         <label>IPS - 2022</label>
         <?php $CtrlEtud->AfficheEtudiants("IPS", "2022"); ?>
-
     </article>

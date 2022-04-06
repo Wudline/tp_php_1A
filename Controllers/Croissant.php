@@ -73,7 +73,9 @@
          * Fait appel au modele Croissant pour sa fonction "AjoutDemande"
          * 
          * @see AjoutDemande($croissantage, $etudiant, $viennoiserie)
-         * @param $croissantage, $etudiant, $viennoiserie
+         * @param $croissantage,
+         * @param $etudiant,
+         * @param $viennoiserie
          */
 
         function VoteCroissantage($croissanté, $etudiant, $viennoiserie)
@@ -114,6 +116,13 @@
             return $msg;
         }
 
+        /**
+         * AfficheCroissant
+         *
+         * @see ListerCroissantage
+         * @return void
+         */
+
         function AfficheCroissant()
         {
             $ModCroissant = new Croissant();
@@ -138,8 +147,11 @@
 
         /**
          * Permet de sélectionner une viennoiserie parmis celle renseignée en base de données
+         *
+         * @see listerViennoiseries
+         * @param $nomPost
+         * @return void
          */
-
         function SelectViennoiseries($nomPost)
         {
             $ModCroissant = new Croissant();
@@ -158,6 +170,13 @@
             echo "</select>";
         }
 
+        /**
+         * AfficheDateCroissantage
+         *
+         * @see getDateCroissantage
+         * @see getDateLimite
+         * @return void
+         */
         function AfficheDateCroissantage ()
         {
             $ModCroissant = new Croissant();
@@ -170,7 +189,18 @@
 
             if ($date < $dl && $dl > $ajrd)
             {
-                echo $date." - ATTENTION : date limite de commande le ".$dl;
+                ?>
+                <article>
+                    <h3>Suite à mon croissantage du : <?php echo $date." - ATTENTION : date limite de commande le ".$dl; ?></h3>
+                    <form method='post'>
+
+                        <label>Je commande à la date du : </label>
+                        <input type="date" name="dateCmd">
+
+                        <input type="submit" name="Commande" value="Commander">
+                    </form>
+                </article>
+            <?php
             }
 
         }

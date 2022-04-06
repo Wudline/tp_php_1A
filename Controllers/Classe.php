@@ -42,6 +42,9 @@
 
         /**
          * Permet de sélectionner une classe parmis celle renseignée en base de données
+         *
+         * @param $nomPost
+         * @return void
          */
 
         function SelectClasses($nomPost)

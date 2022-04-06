@@ -8,6 +8,12 @@
 
     final class CntrlPromo
     {
+        /**
+         * AffichePromo
+         *
+         * @see ListerPromo
+         * @return void
+         */
         function AffichePromo()
         {
             $ModProm = new Promo();
@@ -32,8 +38,11 @@
 
         /**
          * Permet de sélectionner une promo parmis celle renseignée en base de données
+         *
+         * @see ListePromo
+         * @param $nomPost
+         * @return void
          */
-
         function SelectPromo($nomPost)
         {
             $ModProm = new Promo();

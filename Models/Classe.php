@@ -3,14 +3,16 @@
 
     use Tools\Utils;
 
-class Classe {
+    class Classe {
             
             
         /**
          * ListeClasse
          * retourne l'ensemble des classes référencées
+         *
+         * @param $db
+         * @return mixed
          */
-
         public function ListeClasse($db)
         {
             $msg = "";
@@ -22,8 +24,12 @@ class Classe {
         /**
          * ListeEtuClasse
          * retourne l'ensemble des étudiants pour une classe et une promo données
+         *
+         * @param $db
+         * @param $classe
+         * @param $promo
+         * @return mixed
          */
-
         public function ListeEtuClasse($db, $classe, $promo)
         {
             $msg = "";

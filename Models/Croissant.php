@@ -25,8 +25,10 @@
         /**
          * ListeCroissantage
          * retourne la liste de tous les croissantages
+         *
+         * @param $db
+         * @return mixed
          */
-
         public function ListeCroissantage($db)
         {
             $msg = "";
@@ -39,8 +41,10 @@
         /**
          * ListeViennoiseries
          * retourne la liste de toutes les viennoiseries
+         *
+         * @param $db
+         * @return mixed
          */
-
         public function ListerViennoiseries($db)
         {
             $msg = "";
@@ -49,6 +53,13 @@
             return $tool->ResultRequest($db, $requete, $msg, $msg);
         }
 
+        /**
+         * getDateCroissantage
+         *
+         * @param $db
+         * @param $id
+         * @return mixed
+         */
         function getDateCroissantage ($db, $id)
         {
             $msg = "";
@@ -58,7 +69,13 @@
             return $tab[0][0];
         }
 
-
+        /**
+         * getDateLimite
+         *
+         * @param $db
+         * @param $id
+         * @return mixed
+         */
         function getDateLimite ($db, $id)
         {
             $msg = "";

@@ -8,6 +8,13 @@
 
     final class CntrlStatistiques
     {
+
+        /**
+         * ShowMeilleurCroissanteur
+         *
+         * @see MeilleurCroissanteur
+         * @return void
+         */
         function ShowMeilleurCroissanteur(){
             $ModStat = new ModStats();
             $database = new Database();
@@ -30,6 +37,12 @@
             echo "</table>";
         }
 
+        /**
+         * AfficheNbFoisCroissanté
+         *
+         * @see CptCroissanté
+         * @return void
+         */
         function AfficheNbFoisCroissanté()
         {
             $database = new Database();
@@ -45,6 +58,12 @@
             echo $tabRes[0][0];
         }
 
+        /**
+         * AfficheNbCroissantage
+         *
+         * @see CptCroissantage
+         * @return void
+         */
         function AfficheNbCroissantage()
         {
             $database = new Database();

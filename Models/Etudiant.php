@@ -116,6 +116,20 @@
             return $tool->ResultRequest($db, $requete, $msg, $msg);
         }
 
+
+        public function ListeCroissanté($db)
+        {
+            $msg = "";
+            $tool = new Utils();
+            $ajrd = date('Y-m-d');
+            $requete = "select * from etudiant, croissantage 
+              where etudiant.id = croissantage.croissante
+              and croissantage.dateCroissantage<'".$ajrd."' 
+              and croissantage.deadline>'".$ajrd."'
+              order by promo desc, classe, role, nom";
+            return $tool->ResultRequest($db, $requete, $msg, $msg);
+        }
+
         function AffCompltEtu ($db, $classe, $promo)
         {
             $msg = "";

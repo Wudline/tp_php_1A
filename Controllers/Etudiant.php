@@ -230,7 +230,14 @@
             $database = new Database();
             $db = $database->getConnection();
 
-            $liste = $ModEtu->ListeEtudiants($db, $classe, $promo);
+            if ( $nomPost == "hadLose" )
+            {
+                $liste = $ModEtu->ListeCroissanté($db);
+            }
+            else
+            {
+                $liste = $ModEtu->ListeEtudiants($db, $classe, $promo);
+            }
 
             echo "<select name='$nomPost'>";
 
